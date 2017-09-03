@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>请求本地json文件数据</title>
+    <!--<script src="../js/jquery-1.7.2.min.js"></script>-->
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    $(function () {
+        // 请求路径是当前文件的相对路径
+        $.ajax({
+            url:'list.json',
+            contentType: 'application/json',
+            type: 'POST',
+            timeout: 50000,
+            dataType:'JSON',
+            data: JSON.stringify({schoolId: 123}),
+            success: function (res) {
+                if(res.code == '000'){
+                    console.log(res);
+                    $('body').html(JSON.stringify(res));
+                }else{
+                    alert(res.message);
+                }
+            },
+            Error: function (xhr, type, errorThrown) {
+                console.log(JSON.stringify(xhr));
+                console.log(type);
+                console.log(errorThrown);
+            }
+        });
+    })
+</script>
+</body>
+</html>

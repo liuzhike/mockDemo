@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>第三方框架，mockjs拦截ajax请求返回数据</title>
+    <script src="../js/jquery-1.7.2.min.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
+</head>
+<body>
+<!--内容-->
+<!--body结束标签前引用-->
+<!-- （必选）加载 Mock -->
+<!--<script type="text/javascript" src="http://mockjs.com/dist/mock.js"></script>-->
+<script type="text/javascript" src="../js/mock.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+/*
+* Mock.mock( rurl?, rtype?, template|function( options ) )
+* rurl（可选）。表示需要拦截的 URL，可以是 URL 字符串或 URL 正则。例如 /\/domain\/list\.json/、'/domian/list.json'。
+* rtype（可选）。表示需要拦截的 Ajax 请求类型。例如 GET、POST、PUT、DELETE 等。
+* template （可选）。表示数据模板，可以是对象或字符串。例如 { 'data|1-10':[{}] }、'@EMAIL'。
+* function(options)（可选）。表示用于生成响应数据的函数。
+* options 指向本次请求的 Ajax 选项集，含有 url、type 和 body 三个属性*/
+
+
+        /*Mock.Random 是一个工具类，用于生成各种随机数据。
+        * Mock.Random 提供的完整方法（占位符）如下：
+        * 基本：boolean, natural, integer, float, character, string, range,
+        * 时间：date, time, datetime, now；
+        * 图片：image, dataImage；
+        * 颜色：color，hex，rgb，rgba，hsl；
+        * 文本：paragraph, sentence, word, title, cparagraph, csentence, cword, ctitle；
+        * 名字：first, last, name, cfirst, clast, cname；
+        * web：url, domain, email, ip, tld；
+        * 地址：region，province，city，county，zip；
+        * Helper：capitalize, upper, lower, pick, shuffle；
+        * Miscellaneous：guid, id, increment;*/
+//         mock拦截ajax请求并返回数据
+        Mock.mock(/\.json/, {
+            'code':'000',
+            'message':'message信息',
+            'list|1-10': [{
+                'id|+1': 1,
+                'email': '@EMAIL', //邮箱
+                'name': '@name', //名字
+                'time': '@now'    //当前时间
+            }]
+        })
+        $('<pre>').text('Mock.Random生成各种随机数据').appendTo('body');
+        $.ajax({
+            url:'list.json',
+            contentType: 'application/json',
+            type: 'POST',
+            timeout: 50000,
+            dataType:'JSON',
+            data: JSON.stringify({schoolId: 123}),
+            success: function (res) {
+                if(res.code == 000){
+                    console.log(res);
+                    $('<pre>').text(JSON.stringify(res, null, 4)).appendTo('body');
+                }else{
+                    alert(res.message);
+                }
+            },
+            Error: function (xhr, type, errorThrown) {
+                console.log(JSON.stringify(xhr));
+                console.log(type);
+                console.log(errorThrown);
+            }
+        });
+    })
+</script>
+</body>
+</html>

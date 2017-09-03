@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>第三方框架，mockjs拦截ajax请求返回数据</title>
+    <script src="../js/jquery-1.7.2.min.js"></script>
+    <!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
+</head>
+<body>
+<!--内容-->
+<!--body结束标签前引用-->
+<!-- （必选）加载 Mock -->
+<!--<script type="text/javascript" src="http://mockjs.com/dist/mock.js"></script>-->
+<script type="text/javascript" src="../js/mock.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+/*
+* Mock.mock( rurl?, rtype?, template|function( options ) )
+* rurl（可选）。表示需要拦截的 URL，可以是 URL 字符串或 URL 正则。例如 /\/domain\/list\.json/、'/domian/list.json'。
+* rtype（可选）。表示需要拦截的 Ajax 请求类型。例如 GET、POST、PUT、DELETE 等。
+* template （可选）。表示数据模板，可以是对象或字符串。例如 { 'data|1-10':[{}] }、'@EMAIL'。
+* function(options)（可选）。表示用于生成响应数据的函数。
+* options 指向本次请求的 Ajax 选项集，含有 url、type 和 body 三个属性*/
+
+//         mock拦截ajax请求并返回数据
+        Mock.mock(/\.json/, {
+            'code':'000',
+            'message':'message信息',
+            'list|1-10': [{
+                'id|+1': 1,
+                'email': '@EMAIL',
+                'name': '@name',
+                'time':'@now'
+            }]
+        })
+        /*
+        * Mock.setup( settings )
+        * 配置拦截 Ajax 请求时的行为。支持的配置项有：timeout。
+        * settings必选。配置项集合。timeout可选。指定被拦截的 Ajax 请求的响应时间，单位是毫秒。值可以是正整数，例如 400，表示 400 毫秒 后才会返回响应内容；也可以是横杠 '-' 风格的字符串，例如 '200-600'，表示响应时间介于 200 和 600 毫秒之间。默认值是'10-100'。*/
+        Mock.setup({
+            timeout: 4000
+        })
+        $('<pre>').text('数据会在4000毫秒后返回').appendTo('body');
+        $.ajax({
+            url:'list.json',
+            contentType: 'application/json',
+            type: 'POST',
+            timeout: 50000,
+            dataType:'JSON',
+            data: JSON.stringify({schoolId: 123}),
+            success: function (res) {
+                if(res.code == 000){
+                    console.log(res);
+                    $('<pre>').text(JSON.stringify(res, null, 4)).appendTo('body');
+                }else{
+                    alert(res.message);
+                }
+            },
+            Error: function (xhr, type, errorThrown) {
+                console.log(JSON.stringify(xhr));
+                console.log(type);
+                console.log(errorThrown);
+            }
+        });
+    })
+</script>
+</body>
+</html>

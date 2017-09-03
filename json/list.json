@@ -1,0 +1,40 @@
+{
+  "code":"000",
+  "message":"message信息",
+  "lists":[
+    {
+      "address":"测试地址1",
+      "agencyId":100087993,
+      "agencyName":"测试代理商1",
+      "area":"朝阳区1",
+      "areaId":110105,
+      "city":"北京市1",
+      "cityId":110100,
+      "createTime": "2017-08-31",
+      "presidentName":"测试园长1",
+      "presidentPhone":"15011083157",
+      "province":"北京1",
+      "provinceId":110000,
+      "schoolCode":"bj0101176",
+      "schoolId":202082640,
+      "schoolName":"北京市朝阳区测试园所1"
+    },
+    {
+      "address":"测试地址2",
+      "agencyId":100087993,
+      "agencyName":"测试代理商2",
+      "area":"朝阳区2",
+      "areaId":110105,
+      "city":"北京市2",
+      "cityId":110100,
+      "createTime": "2017-08-31",
+      "presidentName":"测试园长2",
+      "presidentPhone":"15011083157",
+      "province":"北京2",
+      "provinceId":110000,
+      "schoolCode":"bj0101176",
+      "schoolId":202082640,
+      "schoolName":"北京市朝阳区测试园所2"
+    }
+  ]
+}
